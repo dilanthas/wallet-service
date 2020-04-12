@@ -8,6 +8,6 @@ public class ErrorMessage {
 	public static final String WALLET_ID_NOT_FOUND = "Provided walletId %s is not found";
 	public static final String UNSUPPORTED_TRANSACTION_TYPE = "Transaction type %s is not supported";
 	public static final String CURRENCY_MISMATCH_WITH_WALLET = "Currency mismatch. Wallet currency is %s and transaction currency is %s";
-	public static final String INSUFFICIENT_FUNDS_IN_WALLET = "Insufficient funds in the walletId %s , to perform the transaction ";
+	public static final String INSUFFICIENT_FUNDS_IN_WALLET = "Insufficient funds in the wallet , to perform the transaction ";
 
 }

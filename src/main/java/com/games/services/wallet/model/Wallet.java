@@ -86,4 +86,8 @@ public class Wallet {
 	public void setLastUpdated(Date lastUpdated) {
 		this.lastUpdated = lastUpdated;
 	}
+
+	public List<Transaction> getTransactions() {
+		return transactions;
+	}
 }

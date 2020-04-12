@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 
 import static com.games.services.wallet.exception.ErrorMessage.UNSUPPORTED_TRANSACTION_TYPE;
@@ -36,8 +37,9 @@ public class TransactionServiceImpl implements TransactionService {
 	private WalletService walletService;
 
 	@Override
-	public Transaction createTransaction(Long transactionId, Long walletId, String transactionType, BigDecimal amount,
-			String currencyCode)
+	public Transaction createTransaction(String transactionRef, Long walletId, String transactionType,
+			BigDecimal amount,
+			String currencyCode, String description)
 			throws WalletException {
 		try {
 			Optional<TransactionType> transactionTypeOp = transactionTypeRepository.findById(transactionType);
@@ -49,11 +51,18 @@ public class TransactionServiceImpl implements TransactionService {
 			Wallet wallet = walletService.updateWalletAmount(walletId, amount, currencyCode, transactionType);
 
 			return transactionRepository
-					.save(new Transaction(transactionId, transactionTypeOp.get(), amount, wallet.getCurrency(), wallet));
+					.save(new Transaction(transactionRef, transactionTypeOp.get(), amount, wallet.getCurrency(), description,
+							wallet));
 
 		}
 		catch (Exception ex) {
 			throw new WalletException(ex.getMessage(), HttpStatus.BAD_REQUEST.value());
 		}
+	}
+
+	@Override
+	public List<Transaction> getAllTransactionByUser(Long userId) throws WalletException {
+		Wallet wallet = walletService.getWalletByUserId(userId);
+		return wallet.getTransactions();
 	}
 }

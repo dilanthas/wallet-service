@@ -11,8 +11,8 @@ public class TransactionDTO {
 	@NotNull(message = "Transaction walletId" + ErrorMessage.CANNOT_BE_EMPTY)
 	private Long walletId;
 
-	@NotNull(message = "Transaction transactionId" + ErrorMessage.CANNOT_BE_EMPTY)
-	private Long transactionId;
+	@NotNull(message = "Transaction transactionRef" + ErrorMessage.CANNOT_BE_EMPTY)
+	private String transactionRef;
 
 	@NotNull(message = "Transaction transactionType" + ErrorMessage.CANNOT_BE_EMPTY)
 	private String transactionType;
@@ -27,16 +27,12 @@ public class TransactionDTO {
 	@NotNull(message = "Transaction description" + ErrorMessage.CANNOT_BE_EMPTY)
 	private String description;
 
-	private TransactionDTO(){
+	private TransactionDTO() {
 
 	}
 
 	public Long getWalletId() {
 		return walletId;
-	}
-
-	public Long getTransactionId() {
-		return transactionId;
 	}
 
 	public String getTransactionType() {
@@ -53,5 +49,9 @@ public class TransactionDTO {
 
 	public String getDescription() {
 		return description;
+	}
+
+	public String getTransactionRef() {
+		return transactionRef;
 	}
 }

@@ -24,19 +24,21 @@ INSERT INTO `currencies` ( `code`, `name`) VALUES
 -- Table structure for table `transactions`
 --
 
-/*DROP TABLE IF EXISTS `transactions`;*/
+DROP TABLE IF EXISTS `transactions`cascade ;
 CREATE TABLE IF NOT EXISTS `transactions` (
   `id` int(50) NOT NULL AUTO_INCREMENT,
   `wallet_id` int(50) NOT NULL,
-  `type_id` int(10) NOT NULL,
+  `transaction_ref` varchar(50) NOT NULL,
+  `type_code` varchar(10) NOT NULL,
   `amount` decimal NOT NULL,
   `currency_code` varchar(10) NOT NULL,
   `transaction_date` timestamp NOT NULL,
   `description` text NOT NULL,
   PRIMARY KEY (`id`),
+  UNIQUE KEY `transaction_ref` (`transaction_ref`),
   KEY `wallet_id` (`wallet_id`),
-  KEY `type_id` (`type_id`),
-  KEY `currency` (`currency_id`)
+  KEY `type_id` (`type_code`),
+  KEY `currency` (`currency_code`)
 ) ;
 
 -- --------------------------------------------------------

@@ -3,6 +3,8 @@ package com.games.services.wallet.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -21,11 +23,16 @@ public class Transaction {
 
 	@Id
 	@Column(name = "id", nullable = false)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+
+	@NotNull(message = "Transaction reference cannot be empty")
+	@Column(name = "transaction_ref", nullable = false, unique = true)
+	private String transactionRef;
 
 	@NotNull(message = "Transaction cannot be empty")
 	@OneToOne
-	@JoinColumn(name = "type_id")
+	@JoinColumn(name = "type_code")
 	private TransactionType type;
 
 	@Min(0)
@@ -35,7 +42,7 @@ public class Transaction {
 
 	@NotNull(message = "Transaction currency cannot be empty")
 	@OneToOne
-	@JoinColumn(name = "currency_id")
+	@JoinColumn(name = "currency_code")
 	private Currency currency;
 
 	@NotNull(message = "Transaction date cannot be empty")
@@ -47,16 +54,21 @@ public class Transaction {
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Wallet wallet;
 
+	@NotNull(message = "Transaction description cannot be empty")
+	@Column(name = "description")
+	private String description;
+
 	private Transaction() {
 
 	}
 
-	public Transaction(Long id, TransactionType type, BigDecimal amount, Currency currency,
+	public Transaction(String transactionRef, TransactionType type, BigDecimal amount, Currency currency, String description,
 			Wallet wallet) {
-		this.id = id;
+		this.transactionRef = transactionRef;
 		this.type = type;
 		this.amount = amount;
 		this.currency = currency;
+		this.description = description;
 		this.wallet = wallet;
 		this.transactionDate = new Date();
 	}
@@ -81,5 +93,8 @@ public class Transaction {
 		return transactionDate;
 	}
 
+	public String getDescription() {
+		return description;
+	}
 }
 

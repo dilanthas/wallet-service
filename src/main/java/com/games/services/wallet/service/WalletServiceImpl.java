@@ -77,7 +77,7 @@ public class WalletServiceImpl implements WalletService {
 			throw new WalletException(String.format(CURRENCY_MISMATCH_WITH_WALLET,walletCurrency,currencyCode), HttpStatus.BAD_REQUEST.value());
 		}
 
-		BigDecimal actualAmount = BalanceCalculator.calculateWalletBalance(walletId,wallet.getAmount(),amount,transactionType);
+		BigDecimal actualAmount = BalanceCalculator.calculateWalletBalance(wallet.getAmount(),amount,transactionType);
 
 		wallet.setAmount(actualAmount);
 		wallet.setLastUpdated(new Date());

@@ -11,12 +11,12 @@ public class BalanceCalculator {
 	public static String TRANSACTION_TYPE_CREDIT = "CR";
 	public static String TRANSACTION_TYPE_DEBIT = "DB";
 
-	public static BigDecimal calculateWalletBalance(Long walletId ,BigDecimal walletAmount , BigDecimal transactionAmount,String transactionType) throws
+	public static BigDecimal calculateWalletBalance(BigDecimal walletAmount , BigDecimal transactionAmount,String transactionType) throws
 			WalletException {
 
 		if(TRANSACTION_TYPE_DEBIT.equals(transactionType)){
 			if(walletAmount.compareTo(transactionAmount) < 0){
-				throw new WalletException(String.format(INSUFFICIENT_FUNDS_IN_WALLET,walletId), HttpStatus.BAD_REQUEST.value());
+				throw new WalletException(INSUFFICIENT_FUNDS_IN_WALLET, HttpStatus.BAD_REQUEST.value());
 			}
 			return walletAmount.subtract(transactionAmount);
 		}else {
