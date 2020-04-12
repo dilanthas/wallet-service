@@ -4,10 +4,8 @@ import com.games.services.wallet.exception.WalletException;
 import com.games.services.wallet.model.Transaction;
 import com.games.services.wallet.model.TransactionType;
 import com.games.services.wallet.model.Wallet;
-import com.games.services.wallet.repository.CurrencyRepository;
 import com.games.services.wallet.repository.TransactionRepository;
 import com.games.services.wallet.repository.TransactionTypeRepository;
-import com.games.services.wallet.repository.WalletRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -21,20 +19,19 @@ import static com.games.services.wallet.exception.ErrorMessage.UNSUPPORTED_TRANS
 @Service
 public class TransactionServiceImpl implements TransactionService {
 
-	@Autowired
 	private TransactionRepository transactionRepository;
 
-	@Autowired
-	private CurrencyRepository currencyRepository;
-
-	@Autowired
 	private TransactionTypeRepository transactionTypeRepository;
 
-	@Autowired
-	private WalletRepository walletRepository;
+	private WalletService walletService;
 
 	@Autowired
-	private WalletService walletService;
+	public TransactionServiceImpl(TransactionRepository transactionRepository,
+			TransactionTypeRepository transactionTypeRepository, WalletService walletService) {
+		this.transactionRepository = transactionRepository;
+		this.transactionTypeRepository = transactionTypeRepository;
+		this.walletService = walletService;
+	}
 
 	@Override
 	public Transaction createTransaction(String transactionRef, Long walletId, String transactionType,

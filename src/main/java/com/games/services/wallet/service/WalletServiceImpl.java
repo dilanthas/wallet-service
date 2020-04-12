@@ -22,17 +22,21 @@ import static com.games.services.wallet.exception.ErrorMessage.WALLET_ID_NOT_FOU
 @Service
 public class WalletServiceImpl implements WalletService {
 
-	@Autowired
 	private WalletRepository walletRepository;
 
-	@Autowired
 	private CurrencyRepository currencyRepository;
+
+	@Autowired
+	public WalletServiceImpl(WalletRepository walletRepository, CurrencyRepository currencyRepository) {
+		this.walletRepository = walletRepository;
+		this.currencyRepository = currencyRepository;
+	}
 
 	@Override
 	public Wallet getWalletById(@NotNull Long id) throws WalletException {
 		Optional<Wallet> optionalWallet = walletRepository.findById(id);
-		if(!optionalWallet.isPresent()){
-			throw new WalletException(String.format(WALLET_ID_NOT_FOUND,id), HttpStatus.BAD_REQUEST.value());
+		if (!optionalWallet.isPresent()) {
+			throw new WalletException(String.format(WALLET_ID_NOT_FOUND, id), HttpStatus.BAD_REQUEST.value());
 		}
 		return optionalWallet.get();
 	}
@@ -52,32 +56,34 @@ public class WalletServiceImpl implements WalletService {
 	public Wallet createWallet(Long userId, String currencyCode) throws WalletException {
 
 		Optional<Currency> currencyOp = currencyRepository.findById(currencyCode);
-		if(!currencyOp.isPresent()){
-			throw new WalletException(String.format(CURRENCY_NOT_SUPPORTED,currencyCode), HttpStatus.BAD_REQUEST.value());
+		if (!currencyOp.isPresent()) {
+			throw new WalletException(String.format(CURRENCY_NOT_SUPPORTED, currencyCode), HttpStatus.BAD_REQUEST.value());
 		}
-		return walletRepository.save(new Wallet(userId,BigDecimal.ZERO,currencyOp.get()));
+		return walletRepository.save(new Wallet(userId, BigDecimal.ZERO, currencyOp.get()));
 	}
 
 	@Override
-	public Wallet updateWalletAmount(Long walletId, BigDecimal amount, String currencyCode, String transactionType) throws WalletException {
+	public Wallet updateWalletAmount(Long walletId, BigDecimal amount, String currencyCode, String transactionType)
+			throws WalletException {
 		Optional<Currency> currencyOp = currencyRepository.findById(currencyCode);
-		if(!currencyOp.isPresent()){
-			throw new WalletException(String.format(CURRENCY_NOT_SUPPORTED,currencyCode), HttpStatus.BAD_REQUEST.value());
+		if (!currencyOp.isPresent()) {
+			throw new WalletException(String.format(CURRENCY_NOT_SUPPORTED, currencyCode), HttpStatus.BAD_REQUEST.value());
 		}
 
 		Optional<Wallet> walletOp = walletRepository.findById(walletId);
-		if(!walletOp.isPresent()){
-			throw new WalletException(String.format(WALLET_ID_NOT_FOUND,walletId), HttpStatus.BAD_REQUEST.value());
+		if (!walletOp.isPresent()) {
+			throw new WalletException(String.format(WALLET_ID_NOT_FOUND, walletId), HttpStatus.BAD_REQUEST.value());
 		}
 
 		Wallet wallet = walletOp.get();
 		String walletCurrency = wallet.getCurrency().getCode();
 
-		if(!walletCurrency.equals(currencyCode)){
-			throw new WalletException(String.format(CURRENCY_MISMATCH_WITH_WALLET,walletCurrency,currencyCode), HttpStatus.BAD_REQUEST.value());
+		if (!walletCurrency.equals(currencyCode)) {
+			throw new WalletException(String.format(CURRENCY_MISMATCH_WITH_WALLET, walletCurrency, currencyCode),
+					HttpStatus.BAD_REQUEST.value());
 		}
 
-		BigDecimal actualAmount = BalanceCalculator.calculateWalletBalance(wallet.getAmount(),amount,transactionType);
+		BigDecimal actualAmount = BalanceCalculator.calculateWalletBalance(wallet.getAmount(), amount, transactionType);
 
 		wallet.setAmount(actualAmount);
 		wallet.setLastUpdated(new Date());
