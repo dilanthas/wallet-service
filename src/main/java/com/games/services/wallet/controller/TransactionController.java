@@ -19,9 +19,12 @@ import java.util.List;
 @RestController
 public class TransactionController {
 
-	@Autowired
 	private TransactionService transactionService;
 
+	@Autowired
+	public TransactionController(TransactionService transactionService){
+		this.transactionService = transactionService;
+	}
 	@PostMapping(value = "/transactions", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public Transaction createTransaction(@Valid @RequestBody TransactionDTO transactionDTO) throws WalletException {

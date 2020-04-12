@@ -19,8 +19,12 @@ import java.math.BigDecimal;
 @RestController
 public class WalletController {
 
-	@Autowired
 	private WalletService walletService;
+
+	@Autowired
+	public WalletController(WalletService walletService){
+		this.walletService = walletService;
+	}
 
 	@ResponseBody
 	@GetMapping("/wallets/{id}")
