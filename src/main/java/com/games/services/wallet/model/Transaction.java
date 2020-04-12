@@ -1,7 +1,5 @@
 package com.games.services.wallet.model;
 
-import com.games.services.wallet.model.TransactionType;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -40,13 +38,10 @@ public class Transaction {
 	@JoinColumn(name = "currency_id")
 	private Currency currency;
 
+	@NotNull(message = "Transaction date cannot be empty")
 	@Column(name = "transaction_date")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date transactionDate;
-
-	@NotNull(message = "Transaction updatedBy cannot be empty")
-	@Column(name = "updated_by")
-	private Long updatedBy;
 
 	@NotNull(message = "Transaction wallet cannot be empty")
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -56,14 +51,14 @@ public class Transaction {
 
 	}
 
-	public Transaction(Long id, TransactionType type, BigDecimal amount, Currency currency, Date transactionDate,
+	public Transaction(Long id, TransactionType type, BigDecimal amount, Currency currency,
 			Wallet wallet) {
 		this.id = id;
 		this.type = type;
 		this.amount = amount;
 		this.currency = currency;
-		this.transactionDate = transactionDate;
 		this.wallet = wallet;
+		this.transactionDate = new Date();
 	}
 
 	public Long getId() {

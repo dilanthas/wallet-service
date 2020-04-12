@@ -10,14 +10,13 @@ import javax.validation.constraints.NotNull;
 @Table(name = "currencies")
 public class Currency {
 
-	@Id
-	@Column(name = "id",nullable = false)
-	private Long id;
+
 
 	@NotNull(message = "Currency name cannot be empty")
 	@Column(name = "name")
 	private String name;
 
+	@Id
 	@NotNull(message = "Currency code cannot be empty")
 	@Column(name = "code")
 	protected String code;
@@ -29,10 +28,6 @@ public class Currency {
 	public Currency(String name , String code){
 		this.name = name;
 		this.code = code;
-	}
-
-	public Long getId() {
-		return id;
 	}
 
 	public String getName() {

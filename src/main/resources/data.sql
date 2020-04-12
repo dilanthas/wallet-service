@@ -5,19 +5,18 @@
 
 DROP TABLE IF EXISTS `currencies` cascade;
 CREATE TABLE IF NOT EXISTS `currencies` (
-  `id` int(10) NOT NULL AUTO_INCREMENT,
   `code` varchar(10) NOT NULL,
   `name` varchar(50) NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`code`)
 ) ;
 
 --
 -- Dumping data for table `currencies`
 --
 
-INSERT INTO `currencies` (`id`, `code`, `name`) VALUES
-(1, 'SEK', 'Swedish Krona'),
-(2, 'EUR', 'Euro');
+INSERT INTO `currencies` ( `code`, `name`) VALUES
+( 'SEK', 'Swedish Krona'),
+( 'EUR', 'Euro');
 
 -- --------------------------------------------------------
 
@@ -31,14 +30,12 @@ CREATE TABLE IF NOT EXISTS `transactions` (
   `wallet_id` int(50) NOT NULL,
   `type_id` int(10) NOT NULL,
   `amount` decimal NOT NULL,
-  `currency_id` int(11) NOT NULL,
+  `currency_code` varchar(10) NOT NULL,
   `transaction_date` timestamp NOT NULL,
-  `updated_by` int(11) NOT NULL,
   `description` text NOT NULL,
   PRIMARY KEY (`id`),
   KEY `wallet_id` (`wallet_id`),
   KEY `type_id` (`type_id`),
-  KEY `updated_by` (`updated_by`),
   KEY `currency` (`currency_id`)
 ) ;
 
@@ -73,14 +70,13 @@ CREATE TABLE IF NOT EXISTS `wallets` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `user_id` int(50) NOT NULL,
   `amount` decimal(10,0) NOT NULL,
-  `currency_id` int(50) NOT NULL,
-  `last_updated_by` int(50) NOT NULL,
+  `currency_code` varchar(10) NOT NULL,
   `last_updated` datetime NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `currency_w` (`currency_id`)
+  KEY `currency_w` (`currency_code`)
 ) ;
 
-INSERT INTO `wallets` (`id`, `user_id`, `amount`, `currency_id`, `last_updated_by`, `last_updated`) VALUES (NULL, '1', '100', '2', '2', '2020-04-11 05:07:00');
+INSERT INTO `wallets` (`id`, `user_id`, `amount`, `currency_code`,  `last_updated`) VALUES (NULL, '1', '100', 'SEK',  '2020-04-11 05:07:00');
 
 
 
