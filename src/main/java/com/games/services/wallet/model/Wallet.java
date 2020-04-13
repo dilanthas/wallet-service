@@ -1,6 +1,6 @@
 package com.games.services.wallet.model;
 
-import com.games.services.wallet.exception.ErrorMessage;
+import com.games.services.wallet.exception.ErrorConstants;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -28,15 +28,15 @@ public class Wallet {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@NotNull(message = "User Id"+ ErrorMessage.CANNOT_BE_EMPTY)
+	@NotNull(message = "User Id"+ ErrorConstants.CANNOT_BE_EMPTY)
 	@Column(name = "user_id")
 	private Long userId;
 
 	@Column(name = "amount",nullable = false)
-	@NotNull(message = "Wallet amount"+ ErrorMessage.CANNOT_BE_EMPTY)
+	@NotNull(message = "Wallet amount"+ ErrorConstants.CANNOT_BE_EMPTY)
 	private BigDecimal amount;
 
-	@NotNull(message = "Wallet currency"+ ErrorMessage.CANNOT_BE_EMPTY)
+	@NotNull(message = "Wallet currency"+ ErrorConstants.CANNOT_BE_EMPTY)
 	@OneToOne
 	@JoinColumn(name = "currency_code")
 	private Currency currency;

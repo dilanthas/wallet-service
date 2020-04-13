@@ -1,6 +1,6 @@
 package com.games.services.wallet.dto;
 
-import com.games.services.wallet.exception.ErrorMessage;
+import com.games.services.wallet.exception.ErrorConstants;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -8,23 +8,23 @@ import java.math.BigDecimal;
 
 public class TransactionDTO {
 
-	@NotNull(message = "Transaction walletId" + ErrorMessage.CANNOT_BE_EMPTY)
+	@NotNull(message = "Transaction walletId" + ErrorConstants.CANNOT_BE_EMPTY)
 	private Long walletId;
 
-	@NotNull(message = "Transaction transactionRef" + ErrorMessage.CANNOT_BE_EMPTY)
+	@NotNull(message = "Transaction transactionRef" + ErrorConstants.CANNOT_BE_EMPTY)
 	private String transactionRef;
 
-	@NotNull(message = "Transaction transactionType" + ErrorMessage.CANNOT_BE_EMPTY)
+	@NotNull(message = "Transaction transactionType" + ErrorConstants.CANNOT_BE_EMPTY)
 	private String transactionType;
 
 	@Min(0)
-	@NotNull(message = "Transaction amount" + ErrorMessage.CANNOT_BE_EMPTY)
+	@NotNull(message = "Transaction amount" + ErrorConstants.CANNOT_BE_EMPTY)
 	private BigDecimal amount;
 
-	@NotNull(message = "Transaction currencyCode" + ErrorMessage.CANNOT_BE_EMPTY)
+	@NotNull(message = "Transaction currencyCode" + ErrorConstants.CANNOT_BE_EMPTY)
 	private String currencyCode;
 
-	@NotNull(message = "Transaction description" + ErrorMessage.CANNOT_BE_EMPTY)
+	@NotNull(message = "Transaction description" + ErrorConstants.CANNOT_BE_EMPTY)
 	private String description;
 
 	private TransactionDTO() {

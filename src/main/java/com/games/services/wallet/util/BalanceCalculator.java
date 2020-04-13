@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 
 import java.math.BigDecimal;
 
-import static com.games.services.wallet.exception.ErrorMessage.INSUFFICIENT_FUNDS_IN_WALLET;
+import static com.games.services.wallet.exception.ErrorConstants.INSUFFICIENT_FUNDS_IN_WALLET;
 
 public class BalanceCalculator {
 	public static String TRANSACTION_TYPE_CREDIT = "CR";

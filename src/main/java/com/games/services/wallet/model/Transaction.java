@@ -1,5 +1,7 @@
 package com.games.services.wallet.model;
 
+import lombok.Data;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -19,6 +21,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "transactions")
+@Data
 public class Transaction {
 
 	@Id

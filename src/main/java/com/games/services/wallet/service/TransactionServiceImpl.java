@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
-import static com.games.services.wallet.exception.ErrorMessage.UNSUPPORTED_TRANSACTION_TYPE;
+import static com.games.services.wallet.exception.ErrorConstants.UNSUPPORTED_TRANSACTION_TYPE;
 
 @Service
 public class TransactionServiceImpl implements TransactionService {
@@ -59,7 +59,8 @@ public class TransactionServiceImpl implements TransactionService {
 
 	@Override
 	public List<Transaction> getAllTransactionByUser(Long userId) throws WalletException {
-		Wallet wallet = walletService.getWalletByUserId(userId);
-		return wallet.getTransactions();
+		//Wallet wallet = walletService.getWalletByUserId(userId);
+		//return wallet.getTransactions();
+		return null;
 	}
 }

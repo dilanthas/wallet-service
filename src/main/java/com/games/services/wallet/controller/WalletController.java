@@ -1,8 +1,9 @@
 package com.games.services.wallet.controller;
 
+import com.games.services.wallet.dto.WalletBalanceDTO;
+import com.games.services.wallet.dto.WalletCriteriaDTO;
 import com.games.services.wallet.dto.WalletDTO;
 import com.games.services.wallet.exception.WalletException;
-import com.games.services.wallet.model.Wallet;
 import com.games.services.wallet.service.WalletService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import java.math.BigDecimal;
 
 @RestController
 public class WalletController {
@@ -28,26 +28,26 @@ public class WalletController {
 
 	@ResponseBody
 	@GetMapping("/wallets/{id}")
-	public Wallet getWalletById(@PathVariable("id") long id) throws WalletException {
+	public WalletDTO getWalletById(@PathVariable("id") long id) throws WalletException {
 		return walletService.getWalletById(id);
 	}
 
 	@ResponseBody
 	@GetMapping("/wallets/user/{id}")
-	public Wallet getWalletByUserId(@PathVariable("id") long userId) throws WalletException{
+	public WalletDTO getWalletByUserId(@PathVariable("id") long userId) throws WalletException{
 		return walletService.getWalletByUserId(userId);
 	}
 
 	@ResponseBody
 	@GetMapping("/wallets/user/{id}/balance")
-	public BigDecimal getWalletBalanceByUserId(@PathVariable("id") long userId) throws WalletException{
+	public WalletBalanceDTO getWalletBalanceByUserId(@PathVariable("id") long userId) throws WalletException{
 		return walletService.getWalletBalanceByUserId(userId);
 	}
 
 	@PostMapping(value = "/wallets",  produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public Wallet createWallet(@Valid @RequestBody WalletDTO walletDTO) throws WalletException{
-		Wallet wallet = walletService.createWallet( walletDTO.getUserId(),walletDTO.getCurrencyCode());
+	public WalletDTO createWallet(@Valid @RequestBody WalletCriteriaDTO walletCriteriaDTO) throws WalletException{
+		WalletDTO wallet = walletService.createWallet( walletCriteriaDTO.getUserId(), walletCriteriaDTO.getCurrencyCode());
 		return wallet;
 	}
 
