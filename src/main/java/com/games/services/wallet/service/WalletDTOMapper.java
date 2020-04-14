@@ -8,23 +8,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class DTOMapper {
+public class WalletDTOMapper {
 
 	private ModelMapper modelMapper;
 
 	@Autowired
-	public DTOMapper(ModelMapper modelMapper) {
+	public WalletDTOMapper(ModelMapper modelMapper) {
 		this.modelMapper = modelMapper;
 	}
 
-	public WalletDTO convertToWalletDto(Wallet wallet) {
-
-		WalletDTO dto = modelMapper.map(wallet, WalletDTO.class);
-		return dto;
+	public WalletDTO mapToDto(Wallet wallet) {
+		return modelMapper.map(wallet, WalletDTO.class);
 	}
 
-	public WalletBalanceDTO convertToWalletBalanceDto(Wallet wallet) {
-		WalletBalanceDTO balanceDTO = modelMapper.map(wallet, WalletBalanceDTO.class);
-		return balanceDTO;
+	public WalletBalanceDTO mapToWalletBalanceDto(Wallet wallet) {
+		return modelMapper.map(wallet, WalletBalanceDTO.class);
 	}
+
 }

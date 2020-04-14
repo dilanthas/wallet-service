@@ -1,6 +1,10 @@
 package com.games.services.wallet.model;
 
 import com.games.services.wallet.exception.ErrorConstants;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,6 +25,10 @@ import java.util.List;
 
 @Entity
 @Table(name = "wallets")
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Wallet {
 
 	@Id
@@ -48,46 +56,4 @@ public class Wallet {
 	@OneToMany(mappedBy = "wallet",fetch = FetchType.LAZY)
 	private List<Transaction> transactions;
 
-	private Wallet() {
-
-	}
-
-	public Wallet(Long userId, BigDecimal amount, Currency currency) {
-		this.userId = userId;
-		this.amount = amount;
-		this.currency = currency;
-		this.lastUpdated = new Date();
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public Long getUserId() {
-		return userId;
-	}
-
-	public BigDecimal getAmount() {
-		return amount;
-	}
-
-	public Currency getCurrency() {
-		return currency;
-	}
-
-	public Date getLastUpdated() {
-		return lastUpdated;
-	}
-
-	public void setAmount(BigDecimal amount) {
-		this.amount = amount;
-	}
-
-	public void setLastUpdated(Date lastUpdated) {
-		this.lastUpdated = lastUpdated;
-	}
-
-	public List<Transaction> getTransactions() {
-		return transactions;
-	}
 }

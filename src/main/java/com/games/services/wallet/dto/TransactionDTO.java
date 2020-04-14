@@ -1,11 +1,14 @@
 package com.games.services.wallet.dto;
 
 import com.games.services.wallet.exception.ErrorConstants;
+import lombok.Data;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import java.util.Date;
 
+@Data
 public class TransactionDTO {
 
 	@NotNull(message = "Transaction walletId" + ErrorConstants.CANNOT_BE_EMPTY)
@@ -15,7 +18,7 @@ public class TransactionDTO {
 	private String transactionRef;
 
 	@NotNull(message = "Transaction transactionType" + ErrorConstants.CANNOT_BE_EMPTY)
-	private String transactionType;
+	private String typeCode;
 
 	@Min(0)
 	@NotNull(message = "Transaction amount" + ErrorConstants.CANNOT_BE_EMPTY)
@@ -27,31 +30,6 @@ public class TransactionDTO {
 	@NotNull(message = "Transaction description" + ErrorConstants.CANNOT_BE_EMPTY)
 	private String description;
 
-	private TransactionDTO() {
+	private Date transactionDate;
 
-	}
-
-	public Long getWalletId() {
-		return walletId;
-	}
-
-	public String getTransactionType() {
-		return transactionType;
-	}
-
-	public BigDecimal getAmount() {
-		return amount;
-	}
-
-	public String getCurrencyCode() {
-		return currencyCode;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public String getTransactionRef() {
-		return transactionRef;
-	}
 }

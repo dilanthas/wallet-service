@@ -1,5 +1,10 @@
 package com.games.services.wallet.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -8,6 +13,10 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "currencies")
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Currency {
 
 
@@ -21,20 +30,4 @@ public class Currency {
 	@Column(name = "code")
 	protected String code;
 
-	public Currency(){
-
-	}
-
-	public Currency(String name , String code){
-		this.name = name;
-		this.code = code;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public String getCode() {
-		return code;
-	}
 }

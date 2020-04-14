@@ -1,6 +1,9 @@
 package com.games.services.wallet.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -22,6 +25,9 @@ import java.util.Date;
 @Entity
 @Table(name = "transactions")
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Transaction {
 
 	@Id
@@ -61,43 +67,5 @@ public class Transaction {
 	@Column(name = "description")
 	private String description;
 
-	private Transaction() {
-
-	}
-
-	public Transaction(String transactionRef, TransactionType type, BigDecimal amount, Currency currency, String description,
-			Wallet wallet) {
-		this.transactionRef = transactionRef;
-		this.type = type;
-		this.amount = amount;
-		this.currency = currency;
-		this.description = description;
-		this.wallet = wallet;
-		this.transactionDate = new Date();
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public TransactionType getType() {
-		return type;
-	}
-
-	public BigDecimal getAmount() {
-		return amount;
-	}
-
-	public Currency getCurrency() {
-		return currency;
-	}
-
-	public Date getTransactionDate() {
-		return transactionDate;
-	}
-
-	public String getDescription() {
-		return description;
-	}
 }
 

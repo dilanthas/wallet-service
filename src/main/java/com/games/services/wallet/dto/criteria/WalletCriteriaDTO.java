@@ -1,4 +1,4 @@
-package com.games.services.wallet.dto;
+package com.games.services.wallet.dto.criteria;
 
 import com.games.services.wallet.exception.ErrorConstants;
 
