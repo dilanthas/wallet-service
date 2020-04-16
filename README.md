@@ -72,7 +72,7 @@ http://localhost:8080/transactions/user/{userId}
 
 Additionally all the above requests are included as a postman test suite inside resources->postman
 
-#Important
+# Important
 1. Adding new currencies are not implemented . Only two currencies are preloaded at the moment and user will have to use those currency codes when sending requests. Below are the currency codes
 ````
 SEK,EUR
