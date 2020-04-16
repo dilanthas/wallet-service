@@ -47,7 +47,7 @@ public class TransactionServiceImpl implements TransactionService {
 				throw new NoDataFoundException(String.format(UNSUPPORTED_TRANSACTION_TYPE, transactionType));
 			}
 
-			Wallet wallet = walletService.updateWalletAmount(transactionDTO.getWalletId(), transactionDTO.getAmount(),
+			Wallet wallet = walletService.updateWalletAmount(transactionDTO.getUserId(), transactionDTO.getAmount(),
 					transactionDTO.getCurrencyCode(), transactionType);
 
 			Transaction transaction = Transaction.builder().transactionRef(transactionDTO.getTransactionRef()).wallet(wallet)

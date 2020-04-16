@@ -19,6 +19,7 @@ import java.util.Date;
 
 import static com.games.services.wallet.exception.ErrorConstants.CURRENCY_MISMATCH_WITH_WALLET;
 import static com.games.services.wallet.exception.ErrorConstants.CURRENCY_NOT_SUPPORTED;
+import static com.games.services.wallet.exception.ErrorConstants.WALLET_EXISTS_FOR_USER;
 import static com.games.services.wallet.exception.ErrorConstants.WALLET_ID_NOT_FOUND;
 import static com.games.services.wallet.exception.ErrorConstants.WALLET_NOT_FOUND_FOR_USER;
 
@@ -38,33 +39,36 @@ public class WalletServiceImpl implements WalletService {
 
 	/**
 	 * Find wallet by wallet id
+	 *
 	 * @param id wallet id
 	 * @return - Wallet
 	 */
 	@Override
-	public Wallet getWalletById(@NotNull Long id)  {
+	public Wallet getWalletById(@NotNull Long id) {
 
-		return walletRepository.findById(id).orElseThrow(() ->  new NoDataFoundException(WALLET_ENTITY_NAME, id));
+		return walletRepository.findById(id).orElseThrow(() -> new NoDataFoundException(WALLET_ENTITY_NAME, id));
 
 	}
 
 	/**
 	 * Find wallet by user id
+	 *
 	 * @param userId
 	 * @return
 	 */
 	@Override
-	public Wallet getWalletByUserId(@NotNull Long userId)  {
+	public Wallet getWalletByUserId(@NotNull Long userId) {
 		Wallet wallet = walletRepository.findByUserId(userId);
 
 		if (wallet == null) {
-			throw new NoDataFoundException(String.format(WALLET_NOT_FOUND_FOR_USER,userId));
+			throw new NoDataFoundException(String.format(WALLET_NOT_FOUND_FOR_USER, userId));
 		}
 		return wallet;
 	}
 
 	/**
 	 * Create and return wallet for given criterria
+	 *
 	 * @param userId
 	 * @param currencyCode
 	 * @return Wallet
@@ -73,17 +77,28 @@ public class WalletServiceImpl implements WalletService {
 	@Override
 	public Wallet createWallet(Long userId, String currencyCode) throws WalletException {
 
-		Currency currency = currencyRepository.findById(currencyCode).orElseThrow(() ->new WalletException(String.format(CURRENCY_NOT_SUPPORTED, currencyCode), HttpStatus.BAD_REQUEST.value()));
+		Currency currency = currencyRepository.findById(currencyCode).orElseThrow(
+				() -> new WalletException(String.format(CURRENCY_NOT_SUPPORTED, currencyCode),
+						HttpStatus.BAD_REQUEST.value()));
 
+		// Currently one user can have one wallet only.if wallet already exists throw exception
+		Wallet existingWallet = walletRepository.findByUserId(userId);
 
-		Wallet wallet = walletRepository.save(Wallet.builder().userId(userId).amount(BigDecimal.ZERO).currency(currency).lastUpdated(new Date()).build());
+		if(existingWallet != null){
+			throw new WalletException(String.format(WALLET_EXISTS_FOR_USER,userId),HttpStatus.BAD_REQUEST.value());
+		}
+
+		Wallet wallet = walletRepository
+				.save(Wallet.builder().userId(userId).amount(BigDecimal.ZERO).currency(currency).lastUpdated(new Date())
+						.build());
 
 		return wallet;
 	}
 
 	/**
-	 * Update wallet balance based on the transaction type.
-	 * @param walletId
+	 * Update wallet balance based on the transaction type per user
+	 *
+	 * @param userId
 	 * @param amount
 	 * @param currencyCode
 	 * @param transactionType
@@ -92,10 +107,14 @@ public class WalletServiceImpl implements WalletService {
 	 */
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.SERIALIZABLE, rollbackFor = WalletException.class)
 	@Override
-	public Wallet updateWalletAmount(Long walletId, BigDecimal amount, String currencyCode, String transactionType)
+	public Wallet updateWalletAmount(Long userId, BigDecimal amount, String currencyCode, String transactionType)
 			throws WalletException {
 
-		Wallet wallet = walletRepository.findById(walletId).orElseThrow(()-> new NoDataFoundException(String.format(WALLET_ID_NOT_FOUND, walletId)));
+		Wallet wallet = walletRepository.findByUserId(userId);
+
+		if (wallet == null) {
+			throw new NoDataFoundException(String.format(WALLET_ID_NOT_FOUND, userId));
+		}
 
 		String walletCurrency = wallet.getCurrency().getCode();
 
@@ -112,6 +131,5 @@ public class WalletServiceImpl implements WalletService {
 
 		return walletRepository.save(wallet);
 	}
-
 
 }

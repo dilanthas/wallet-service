@@ -177,7 +177,7 @@ public class TransactionServiceTest {
 		TransactionDTO dto = modelMapper.map(transaction1,TransactionDTO.class);
 		Mockito.when(transactionTypeRepository.findById(dto.getTypeCode())).thenReturn(Optional.of(creditTrs));
 
-		Mockito.when(walletService.updateWalletAmount(dto.getWalletId(),dto.getAmount(),dto.getCurrencyCode(),dto.getTypeCode())).thenReturn(wallet);
+		Mockito.when(walletService.updateWalletAmount(dto.getUserId(),dto.getAmount(),dto.getCurrencyCode(),dto.getTypeCode())).thenReturn(wallet);
 
 		Mockito.when(transactionRepository.save(Mockito.any(Transaction.class))).thenReturn(transaction1);
 
@@ -196,7 +196,7 @@ public class TransactionServiceTest {
 		TransactionDTO dto = modelMapper.map(transaction1,TransactionDTO.class);
 		Mockito.when(transactionTypeRepository.findById(dto.getTypeCode())).thenReturn(Optional.of(creditTrs));
 
-		Mockito.when(walletService.updateWalletAmount(dto.getWalletId(),dto.getAmount(),dto.getCurrencyCode(),dto.getTypeCode())).thenThrow(new WalletException(INSUFFICIENT_FUNDS_IN_WALLET, HttpStatus.BAD_REQUEST.value()));
+		Mockito.when(walletService.updateWalletAmount(dto.getUserId(),dto.getAmount(),dto.getCurrencyCode(),dto.getTypeCode())).thenThrow(new WalletException(INSUFFICIENT_FUNDS_IN_WALLET, HttpStatus.BAD_REQUEST.value()));
 
 
 		// When

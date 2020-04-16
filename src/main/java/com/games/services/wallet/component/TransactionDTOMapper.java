@@ -19,13 +19,15 @@ public class TransactionDTOMapper {
 		this.modelMapper = modelMapper;
 	}
 
-	public TransactionDTO mapToDto(Transaction transaction){
-		return modelMapper.map(transaction,TransactionDTO.class);
+	public TransactionDTO mapToDto(Transaction transaction, Long userId) {
+		TransactionDTO dto = modelMapper.map(transaction, TransactionDTO.class);
+		dto.setUserId(userId);
+		return dto;
 	}
 
-	public List<TransactionDTO> mapToDto(List<Transaction> transactions){
+	public List<TransactionDTO> mapToDto(List<Transaction> transactions, Long userId) {
 		return transactions.stream()
-				.map(this::mapToDto)
+				.map(t -> mapToDto(t, userId))
 				.collect(Collectors.toList());
 	}
 }

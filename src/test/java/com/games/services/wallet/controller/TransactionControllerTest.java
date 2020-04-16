@@ -63,10 +63,11 @@ public class TransactionControllerTest {
 		String desc = "Test";
 		Date trsDate = new Date();
 		Long trsId = Long.valueOf(1);
+		Long userId = Long.valueOf(1);
 
 		ObjectMapper mapper = new ObjectMapper();
 
-		dto = new TransactionDTO(walletId,transactionRef,typeCode, trsAmount,currencyCode,desc,trsDate);
+		dto = new TransactionDTO(walletId,userId,transactionRef,typeCode, trsAmount,currencyCode,desc,trsDate);
 
 		Currency currency = Currency.builder().name("Swedish Krona").code(currencyCode).build();
 
@@ -92,7 +93,7 @@ public class TransactionControllerTest {
 		// When
 		mockMvc.perform(post("/transactions").content(transactionCriteria).contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
-				.andExpect(jsonPath("$.walletId", is(wallet.getId().intValue())))
+				.andExpect(jsonPath("$.userId", is(wallet.getId().intValue())))
 				.andExpect(jsonPath("$.transactionRef", is(transaction.getTransactionRef())))
 				.andExpect(jsonPath("$.typeCode", is(transaction.getType().getCode())))
 				.andExpect(jsonPath("$.amount", is(transaction.getAmount().intValue())))
@@ -114,7 +115,7 @@ public class TransactionControllerTest {
 
 
 		String transactionCriteria = mapper.writeValueAsString(currentDto);
-		String errorMessage = "Transaction walletId"+ErrorConstants.CANNOT_BE_EMPTY;
+		String errorMessage = "Transaction userId"+ErrorConstants.CANNOT_BE_EMPTY;
 
 		// When
 		mockMvc.perform(post("/transactions").content(transactionCriteria).contentType(MediaType.APPLICATION_JSON))

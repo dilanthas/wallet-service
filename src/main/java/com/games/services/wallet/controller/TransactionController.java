@@ -32,14 +32,14 @@ public class TransactionController {
 
 	@PostMapping(value = "/transactions")
 	public ResponseEntity<TransactionDTO> createTransaction(@Valid @RequestBody TransactionDTO transactionDTO) throws WalletException {
-		return new ResponseEntity<>(transactionDTOMapper.mapToDto(transactionService.createTransaction(transactionDTO)), HttpStatus.OK);
+		return new ResponseEntity<>(transactionDTOMapper.mapToDto(transactionService.createTransaction(transactionDTO),transactionDTO.getUserId()), HttpStatus.OK);
 
 	}
 
 	@GetMapping("/transactions/user/{id}")
 	public ResponseEntity<List<TransactionDTO>> getAllTransactionsByUser(@PathVariable Long id) throws WalletException {
 
-		return new ResponseEntity<>(transactionDTOMapper.mapToDto(transactionService.getAllTransactionByUser(id)), HttpStatus.OK);
+		return new ResponseEntity<>(transactionDTOMapper.mapToDto(transactionService.getAllTransactionByUser(id),id), HttpStatus.OK);
 
 	}
 }

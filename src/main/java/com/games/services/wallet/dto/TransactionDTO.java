@@ -16,8 +16,10 @@ import java.util.Date;
 @NoArgsConstructor
 public class TransactionDTO {
 
-	@NotNull(message = "Transaction walletId" + ErrorConstants.CANNOT_BE_EMPTY)
-	private Long walletId;
+	private Long id;
+
+	@NotNull(message = "Transaction userId" + ErrorConstants.CANNOT_BE_EMPTY)
+	private Long userId;
 
 	@NotNull(message = "Transaction transactionRef" + ErrorConstants.CANNOT_BE_EMPTY)
 	@NotBlank(message = "Transaction transactionRef" + ErrorConstants.CANNOT_BE_EMPTY)
