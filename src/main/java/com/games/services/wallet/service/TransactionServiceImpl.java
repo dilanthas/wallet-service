@@ -36,6 +36,14 @@ public class TransactionServiceImpl implements TransactionService {
 	@Autowired
 	private WalletService walletService;
 
+	/**
+	 * Add transactions to the user wallet
+	 * @param transactionDTO
+	 * @return
+	 * @throws WalletException - for insufficient funds
+	 * @throws NoDataFoundException - Invalid wallet id, transaction types
+	 */
+
 	@Transactional(isolation = Isolation.SERIALIZABLE, propagation = Propagation.REQUIRED, rollbackFor = WalletException.class)
 	@Override
 	public Transaction createTransaction(TransactionDTO transactionDTO)
@@ -47,6 +55,8 @@ public class TransactionServiceImpl implements TransactionService {
 				throw new NoDataFoundException(String.format(UNSUPPORTED_TRANSACTION_TYPE, transactionType));
 			}
 
+
+			// First check the wallet can be updated
 			Wallet wallet = walletService.updateWalletAmount(transactionDTO.getUserId(), transactionDTO.getAmount(),
 					transactionDTO.getCurrencyCode(), transactionType);
 
@@ -63,6 +73,13 @@ public class TransactionServiceImpl implements TransactionService {
 		}
 
 	}
+
+	/**
+	 * Return all transactions per user . This will be sorted based on transaction date to get the latest transactions first
+	 * @param userId
+	 * @return
+	 * @throws WalletException
+	 */
 
 	@Override
 	public List<Transaction> getAllTransactionByUser(Long userId) throws WalletException {

@@ -82,4 +82,18 @@ public class BalanceCalculatorTest {
 
 	}
 
+	@Test
+	public void shouldBeAbleToDebitTheSameAmountAsBalance() throws Exception{
+
+		// Given
+		BigDecimal walletAmount = BigDecimal.valueOf(100);
+		BigDecimal transactionAmount = BigDecimal.valueOf(100);
+
+		// WHen
+		BigDecimal balance = calculator.calculateWalletBalance(walletAmount, transactionAmount, dbTransaction);
+
+		// Then
+		Assertions.assertEquals(balance, BigDecimal.valueOf(0));
+	}
+
 }

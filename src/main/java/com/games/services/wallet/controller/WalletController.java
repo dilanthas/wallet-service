@@ -27,13 +27,19 @@ public class WalletController {
 	private WalletDTOMapper walletDTOMapper;
 
 	@Autowired
-	public WalletController(WalletService walletService, WalletDTOMapper walletDTOMapper){
+	public WalletController(WalletService walletService, WalletDTOMapper walletDTOMapper) {
 		this.walletService = walletService;
 		this.walletDTOMapper = walletDTOMapper;
 	}
 
+	@GetMapping(value = "/hello", produces = MediaType.TEXT_PLAIN_VALUE)
+	@ResponseBody
+	public String test() throws WalletException, ClassNotFoundException {
+		return "Hello!";
+	}
+
 	@GetMapping("/wallets/{id}")
-	public ResponseEntity<WalletDTO> getWalletById(@PathVariable("id") long id)  {
+	public ResponseEntity<WalletDTO> getWalletById(@PathVariable("id") long id) {
 		return new ResponseEntity<>(walletDTOMapper.mapToDto(walletService.getWalletById(id)), HttpStatus.OK);
 	}
 
@@ -45,17 +51,19 @@ public class WalletController {
 	@ResponseBody
 	@GetMapping("/wallets/user/{id}/balance")
 	public ResponseEntity<WalletBalanceDTO> getWalletBalanceByUserId(@PathVariable("id") long userId) {
-		return new ResponseEntity<>(walletDTOMapper.mapToWalletBalanceDto(walletService.getWalletByUserId(userId)), HttpStatus.OK);
+		return new ResponseEntity<>(walletDTOMapper.mapToWalletBalanceDto(walletService.getWalletByUserId(userId)),
+				HttpStatus.OK);
 
 	}
 
-	@PostMapping(value = "/wallets",  produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value = "/wallets", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public ResponseEntity<WalletDTO> createWallet(@Valid @RequestBody WalletCriteriaDTO walletCriteriaDTO) throws WalletException{
-		return new ResponseEntity<>(walletDTOMapper.mapToDto(walletService.createWallet( walletCriteriaDTO.getUserId(), walletCriteriaDTO.getCurrencyCode())), HttpStatus.OK);
+	public ResponseEntity<WalletDTO> createWallet(@Valid @RequestBody WalletCriteriaDTO walletCriteriaDTO)
+			throws WalletException {
+		return new ResponseEntity<>(walletDTOMapper
+				.mapToDto(walletService.createWallet(walletCriteriaDTO.getUserId(), walletCriteriaDTO.getCurrencyCode())),
+				HttpStatus.OK);
 
 	}
-
-
 
 }

@@ -6,6 +6,8 @@ import com.games.services.wallet.model.Currency;
 import com.games.services.wallet.model.Wallet;
 import com.games.services.wallet.repository.CurrencyRepository;
 import com.games.services.wallet.repository.WalletRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -25,6 +27,8 @@ import static com.games.services.wallet.exception.ErrorConstants.WALLET_NOT_FOUN
 
 @Service
 public class WalletServiceImpl implements WalletService {
+
+	private Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@Autowired
 	private WalletRepository walletRepository;
@@ -77,15 +81,17 @@ public class WalletServiceImpl implements WalletService {
 	@Override
 	public Wallet createWallet(Long userId, String currencyCode) throws WalletException {
 
+		logger.debug("Wallet Criteria userId: " + userId + " currency :" + currencyCode);
+
 		Currency currency = currencyRepository.findById(currencyCode).orElseThrow(
 				() -> new WalletException(String.format(CURRENCY_NOT_SUPPORTED, currencyCode),
 						HttpStatus.BAD_REQUEST.value()));
 
-		// Currently one user can have one wallet only.if wallet already exists throw exception
+		// Currently one user can have one wallet only.if wallet already exists for the given user throw exception
 		Wallet existingWallet = walletRepository.findByUserId(userId);
 
-		if(existingWallet != null){
-			throw new WalletException(String.format(WALLET_EXISTS_FOR_USER,userId),HttpStatus.BAD_REQUEST.value());
+		if (existingWallet != null) {
+			throw new WalletException(String.format(WALLET_EXISTS_FOR_USER, userId), HttpStatus.BAD_REQUEST.value());
 		}
 
 		Wallet wallet = walletRepository
@@ -110,6 +116,8 @@ public class WalletServiceImpl implements WalletService {
 	public Wallet updateWalletAmount(Long userId, BigDecimal amount, String currencyCode, String transactionType)
 			throws WalletException {
 
+		logger.debug("Updating wallet for user : " + userId + " amount :" + amount + " currency :" + currencyCode);
+
 		Wallet wallet = walletRepository.findByUserId(userId);
 
 		if (wallet == null) {
@@ -125,6 +133,8 @@ public class WalletServiceImpl implements WalletService {
 
 		// Calculate the actual balance of the wallet
 		BigDecimal actualAmount = balanceCalculator.calculateWalletBalance(wallet.getAmount(), amount, transactionType);
+
+		logger.debug("New wallet balance : " + actualAmount + " walletId :" + wallet.getId());
 
 		wallet.setAmount(actualAmount);
 		wallet.setLastUpdated(new Date());
