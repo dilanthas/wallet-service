@@ -16,7 +16,7 @@ mvn clean install
 mvn spring-boot:run
 ``` 
 
-3. Once the application started you can test it by going to
+3. Once the application started you can test it by going to. Default application port is set to 8080 but you can change it by updating server.port in the application.properties file
 ```
 http://localhost:8080/hello
 ```
