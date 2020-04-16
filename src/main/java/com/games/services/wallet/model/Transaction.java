@@ -67,5 +67,11 @@ public class Transaction {
 	@Column(name = "description")
 	private String description;
 
+	@Override
+	public String toString() {
+		return "Transaction{" + "id=" + getId() + ", transactionRef=" + transactionRef + ", transactionType=" + type.getCode() +", amount=" + amount.toString() + ", currency=" +
+				currency.getCode() + ", transactionDate=" + transactionDate.toString() +", description=" + description + '}';
+	}
+
 }
 

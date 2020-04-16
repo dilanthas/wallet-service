@@ -9,6 +9,9 @@ import com.games.services.wallet.repository.WalletRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
@@ -22,34 +25,36 @@ import static com.games.services.wallet.exception.ErrorConstants.WALLET_NOT_FOUN
 @Service
 public class WalletServiceImpl implements WalletService {
 
+	@Autowired
 	private WalletRepository walletRepository;
 
+	@Autowired
 	private CurrencyRepository currencyRepository;
 
 	private String WALLET_ENTITY_NAME = "Wallet";
 
-	private WalletDTOMapper walletDtoMapper;
-
+	@Autowired
 	private BalanceCalculator balanceCalculator;
 
-	@Autowired
-	public WalletServiceImpl(WalletRepository walletRepository, CurrencyRepository currencyRepository,
-			WalletDTOMapper walletDtoMapper,BalanceCalculator balanceCalculator) {
-		this.walletRepository = walletRepository;
-		this.currencyRepository = currencyRepository;
-		this.walletDtoMapper = walletDtoMapper;
-		this.balanceCalculator = balanceCalculator;
-	}
-
+	/**
+	 * Find wallet by wallet id
+	 * @param id wallet id
+	 * @return - Wallet
+	 */
 	@Override
-	public Wallet getWalletById(@NotNull Long id) throws WalletException {
+	public Wallet getWalletById(@NotNull Long id)  {
 
 		return walletRepository.findById(id).orElseThrow(() ->  new NoDataFoundException(WALLET_ENTITY_NAME, id));
 
 	}
 
+	/**
+	 * Find wallet by user id
+	 * @param userId
+	 * @return
+	 */
 	@Override
-	public Wallet getWalletByUserId(@NotNull Long userId) throws WalletException {
+	public Wallet getWalletByUserId(@NotNull Long userId)  {
 		Wallet wallet = walletRepository.findByUserId(userId);
 
 		if (wallet == null) {
@@ -58,17 +63,13 @@ public class WalletServiceImpl implements WalletService {
 		return wallet;
 	}
 
-	@Override
-	public Wallet getWalletBalanceByUserId(@NotNull Long userId) throws WalletException {
-		Wallet wallet = walletRepository.findByUserId(userId);
-
-		if (wallet == null) {
-			throw new NoDataFoundException(String.format(WALLET_NOT_FOUND_FOR_USER,userId));
-		}
-
-		return wallet;
-	}
-
+	/**
+	 * Create and return wallet for given criterria
+	 * @param userId
+	 * @param currencyCode
+	 * @return Wallet
+	 * @throws WalletException
+	 */
 	@Override
 	public Wallet createWallet(Long userId, String currencyCode) throws WalletException {
 
@@ -80,6 +81,16 @@ public class WalletServiceImpl implements WalletService {
 		return wallet;
 	}
 
+	/**
+	 * Update wallet balance based on the transaction type.
+	 * @param walletId
+	 * @param amount
+	 * @param currencyCode
+	 * @param transactionType
+	 * @return
+	 * @throws WalletException - For debit transactions if the wallet does not have enough balance it will throw WalletException
+	 */
+	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.SERIALIZABLE, rollbackFor = WalletException.class)
 	@Override
 	public Wallet updateWalletAmount(Long walletId, BigDecimal amount, String currencyCode, String transactionType)
 			throws WalletException {
@@ -93,6 +104,7 @@ public class WalletServiceImpl implements WalletService {
 					HttpStatus.BAD_REQUEST.value());
 		}
 
+		// Calculate the actual balance of the wallet
 		BigDecimal actualAmount = balanceCalculator.calculateWalletBalance(wallet.getAmount(), amount, transactionType);
 
 		wallet.setAmount(actualAmount);

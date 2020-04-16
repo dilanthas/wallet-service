@@ -1,8 +1,8 @@
 package com.games.services.wallet.controller;
 
+import com.games.services.wallet.component.TransactionDTOMapper;
 import com.games.services.wallet.dto.TransactionDTO;
 import com.games.services.wallet.exception.WalletException;
-import com.games.services.wallet.service.TransactionDTOMapper;
 import com.games.services.wallet.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
@@ -37,7 +36,6 @@ public class TransactionController {
 
 	}
 
-	@ResponseBody
 	@GetMapping("/transactions/user/{id}")
 	public ResponseEntity<List<TransactionDTO>> getAllTransactionsByUser(@PathVariable Long id) throws WalletException {
 

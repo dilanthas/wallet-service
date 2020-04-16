@@ -56,4 +56,10 @@ public class Wallet {
 	@OneToMany(mappedBy = "wallet",fetch = FetchType.LAZY)
 	private List<Transaction> transactions;
 
+
+	@Override
+	public String toString() {
+		return "Wallet{" + "id=" + getId() + ", userId=" + userId + ", amount=" + amount.toString() + ", currency=" +
+				currency.getCode() + ", lastUpdated=" + lastUpdated.toString() + '}';
+	}
 }

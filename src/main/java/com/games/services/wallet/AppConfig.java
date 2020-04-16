@@ -1,6 +1,6 @@
 package com.games.services.wallet;
 
-import com.games.services.wallet.service.WalletDTOMapper;
+import com.games.services.wallet.component.WalletDTOMapper;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

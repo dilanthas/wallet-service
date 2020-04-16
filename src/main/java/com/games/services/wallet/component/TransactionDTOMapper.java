@@ -1,15 +1,15 @@
-package com.games.services.wallet.service;
+package com.games.services.wallet.component;
 
 import com.games.services.wallet.dto.TransactionDTO;
 import com.games.services.wallet.model.Transaction;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Service
+@Component
 public class TransactionDTOMapper {
 
 	private ModelMapper modelMapper;

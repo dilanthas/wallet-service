@@ -22,7 +22,7 @@ public class TransactionType {
 	@Id
 	@NotNull(message = "Transaction type code cannot be empty")
 	@Column(name = "code")
-	protected String code;
+	private String code;
 
 	@NotNull(message = "Transaction type name cannot be empty")
 	@Column(name = "name")

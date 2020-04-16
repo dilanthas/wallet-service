@@ -1,10 +1,10 @@
 package com.games.services.wallet.controller;
 
+import com.games.services.wallet.component.WalletDTOMapper;
 import com.games.services.wallet.dto.WalletBalanceDTO;
 import com.games.services.wallet.dto.WalletDTO;
 import com.games.services.wallet.dto.criteria.WalletCriteriaDTO;
 import com.games.services.wallet.exception.WalletException;
-import com.games.services.wallet.service.WalletDTOMapper;
 import com.games.services.wallet.service.WalletService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,19 +33,19 @@ public class WalletController {
 	}
 
 	@GetMapping("/wallets/{id}")
-	public ResponseEntity<WalletDTO> getWalletById(@PathVariable("id") long id) throws WalletException {
+	public ResponseEntity<WalletDTO> getWalletById(@PathVariable("id") long id)  {
 		return new ResponseEntity<>(walletDTOMapper.mapToDto(walletService.getWalletById(id)), HttpStatus.OK);
 	}
 
 	@GetMapping("/wallets/user/{id}")
-	public ResponseEntity<WalletDTO> getWalletByUserId(@PathVariable("id") long userId) throws WalletException{
+	public ResponseEntity<WalletDTO> getWalletByUserId(@PathVariable("id") long userId) {
 		return new ResponseEntity<>(walletDTOMapper.mapToDto(walletService.getWalletByUserId(userId)), HttpStatus.OK);
 	}
 
 	@ResponseBody
 	@GetMapping("/wallets/user/{id}/balance")
-	public ResponseEntity<WalletBalanceDTO> getWalletBalanceByUserId(@PathVariable("id") long userId) throws WalletException{
-		return new ResponseEntity<>(walletDTOMapper.mapToWalletBalanceDto(walletService.getWalletBalanceByUserId(userId)), HttpStatus.OK);
+	public ResponseEntity<WalletBalanceDTO> getWalletBalanceByUserId(@PathVariable("id") long userId) {
+		return new ResponseEntity<>(walletDTOMapper.mapToWalletBalanceDto(walletService.getWalletByUserId(userId)), HttpStatus.OK);
 
 	}
 

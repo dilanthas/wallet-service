@@ -2,6 +2,7 @@ package com.games.services.wallet.dto.criteria;
 
 import com.games.services.wallet.exception.ErrorConstants;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 public class WalletCriteriaDTO {
@@ -10,6 +11,7 @@ public class WalletCriteriaDTO {
 	private Long userId;
 
 	@NotNull(message = "Wallet currencyCode" + ErrorConstants.CANNOT_BE_EMPTY)
+	@NotBlank(message = "Wallet currencyCode" + ErrorConstants.CANNOT_BE_EMPTY)
 	private String currencyCode;
 
 	public WalletCriteriaDTO(){

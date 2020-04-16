@@ -1,5 +1,6 @@
 package com.games.services.wallet.controller;
 
+import com.games.services.wallet.exception.ErrorConstants;
 import com.games.services.wallet.model.Currency;
 import com.games.services.wallet.model.Wallet;
 import com.games.services.wallet.service.WalletService;
@@ -73,19 +74,19 @@ public class WalletControllerTest {
 	}
 
 	@Test
-	public void shouldCreateWalletForGivenCriteria() throws Exception{
+	public void shouldCreateWalletForGivenCriteria() throws Exception {
 
 		// Given
 		Long userId = Long.valueOf(12);
 		String currencyCode = "SEK";
-		String walletCriteria = "{\"userId\":\"" + 12 +"\",\"currencyCode\":\"" + currencyCode + "\"}";;
+		String walletCriteria = "{\"userId\":\"" + 12 + "\",\"currencyCode\":\"" + currencyCode + "\"}";
 
-		Mockito.when(service.createWallet(userId,currency.getCode())).thenReturn(wallet);
-
+		Mockito.when(service.createWallet(userId, currency.getCode())).thenReturn(wallet);
 
 		// When
 
-		mockMvc.perform(post("/wallets").content(walletCriteria).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
+		mockMvc.perform(post("/wallets").content(walletCriteria).contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.id", is(wallet.getId().intValue())))
 				.andExpect(jsonPath("$.userId", is(wallet.getUserId().intValue())))
 				.andExpect(jsonPath("$.currencyCode", is(currency.getCode())))
@@ -94,7 +95,34 @@ public class WalletControllerTest {
 	}
 
 	@Test
-	public void shouldReturnBadRequestForIncompleteWalletCriteria(){
+	public void shouldReturnCorrectErrorMessageForEmptyCurrency() throws Exception {
 
+		// Given
+		Long userId = Long.valueOf(12);
+		String walletCriteria = "{\"userId\":\"" + 12 + "\",\"currencyCode\":\"\"}";
+		String errorMessage = "Wallet currencyCode" + ErrorConstants.CANNOT_BE_EMPTY;
+
+		Mockito.when(service.createWallet(userId, currency.getCode())).thenReturn(wallet);
+
+		// When
+
+		mockMvc.perform(post("/wallets").content(walletCriteria).contentType(MediaType.APPLICATION_JSON))
+				.andExpect(jsonPath("$.errorMessage", is(errorMessage)))
+		;
+	}
+
+	@Test
+	public void shouldReturnBadRequestForInCompleteWalletCriteria() throws Exception {
+
+		// Given
+		Long userId = Long.valueOf(12);
+		String walletCriteria = "{\"userId\":\"" + 12 + "\"}";
+
+		Mockito.when(service.createWallet(userId, currency.getCode())).thenReturn(wallet);
+
+		// When
+
+		mockMvc.perform(post("/wallets").content(walletCriteria).contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isBadRequest());
 	}
 }

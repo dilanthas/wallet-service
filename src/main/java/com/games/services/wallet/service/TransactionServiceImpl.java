@@ -27,28 +27,19 @@ import static com.games.services.wallet.exception.ErrorConstants.UNSUPPORTED_TRA
 @Service
 public class TransactionServiceImpl implements TransactionService {
 
+	@Autowired
 	private TransactionRepository transactionRepository;
 
+	@Autowired
 	private TransactionTypeRepository transactionTypeRepository;
 
-	private WalletService walletService;
-
-	private WalletDTOMapper walletDtoMapper;
-
 	@Autowired
-	public TransactionServiceImpl(TransactionRepository transactionRepository,
-			TransactionTypeRepository transactionTypeRepository, WalletService walletService,
-			WalletDTOMapper walletDtoMapper) {
-		this.transactionRepository = transactionRepository;
-		this.transactionTypeRepository = transactionTypeRepository;
-		this.walletService = walletService;
-		this.walletDtoMapper = walletDtoMapper;
-	}
+	private WalletService walletService;
 
 	@Transactional(isolation = Isolation.SERIALIZABLE, propagation = Propagation.REQUIRED, rollbackFor = WalletException.class)
 	@Override
 	public Transaction createTransaction(TransactionDTO transactionDTO)
-			throws WalletException {
+			throws WalletException, NoDataFoundException {
 		try {
 			String transactionType = transactionDTO.getTypeCode();
 			Optional<TransactionType> transactionTypeOp = transactionTypeRepository.findById(transactionType);
@@ -65,13 +56,12 @@ public class TransactionServiceImpl implements TransactionService {
 
 			return transactionRepository.save(transaction);
 
-
 		}
 		catch (DataIntegrityViolationException ex) {
-			throw new WalletException(String.format(TRANSACTION_REF_ALREADY_EXISTS,transactionDTO.getTransactionRef()), HttpStatus.BAD_REQUEST.value());
-		}catch (Exception ex) {
-			throw new WalletException(ex.getMessage(), HttpStatus.BAD_REQUEST.value());
+			throw new WalletException(String.format(TRANSACTION_REF_ALREADY_EXISTS, transactionDTO.getTransactionRef()),
+					HttpStatus.BAD_REQUEST.value());
 		}
+
 	}
 
 	@Override
@@ -80,7 +70,7 @@ public class TransactionServiceImpl implements TransactionService {
 		List<Transaction> transactions = wallet.getTransactions();
 
 		// Sort by the transaction date to get the latest transactions first
-		Comparator.comparing(Transaction::getTransactionDate).reversed();
+		transactions.sort(Comparator.comparing(Transaction::getTransactionDate).reversed());
 
 		return transactions;
 	}

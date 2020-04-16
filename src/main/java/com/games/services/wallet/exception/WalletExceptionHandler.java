@@ -16,6 +16,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Exception handler for the application
+ */
 @ControllerAdvice
 public class WalletExceptionHandler extends ResponseEntityExceptionHandler {
 

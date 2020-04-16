@@ -8,6 +8,9 @@ import java.math.BigDecimal;
 
 import static com.games.services.wallet.exception.ErrorConstants.INSUFFICIENT_FUNDS_IN_WALLET;
 
+/**
+ * Service class to calculate wallet balance
+ */
 @Service
 public class BalanceCalculator {
 
@@ -18,6 +21,7 @@ public class BalanceCalculator {
 			WalletException {
 
 		if (TRANSACTION_TYPE_DEBIT.equals(transactionType)) {
+			// If the wallet amount is less than the debit amount , throw exception
 			if (walletAmount.compareTo(transactionAmount) < 0) {
 				throw new WalletException(INSUFFICIENT_FUNDS_IN_WALLET, HttpStatus.BAD_REQUEST.value());
 			}

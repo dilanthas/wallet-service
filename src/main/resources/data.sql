@@ -3,20 +3,14 @@
 -- Table structure for table `currencies`
 --
 
-DROP TABLE IF EXISTS `currencies` cascade;
+/*DROP TABLE IF EXISTS `currencies` cascade*/;
 CREATE TABLE IF NOT EXISTS `currencies` (
   `code` varchar(10) NOT NULL,
   `name` varchar(50) NOT NULL,
   PRIMARY KEY (`code`)
 ) ;
 
---
--- Dumping data for table `currencies`
---
 
-INSERT INTO `currencies` ( `code`, `name`) VALUES
-( 'SEK', 'Swedish Krona'),
-( 'EUR', 'Euro');
 
 -- --------------------------------------------------------
 
@@ -24,7 +18,7 @@ INSERT INTO `currencies` ( `code`, `name`) VALUES
 -- Table structure for table `transactions`
 --
 
-DROP TABLE IF EXISTS `transactions`cascade ;
+/*DROP TABLE IF EXISTS `transactions`cascade ;*/
 CREATE TABLE IF NOT EXISTS `transactions` (
   `id` int(50) NOT NULL AUTO_INCREMENT,
   `wallet_id` int(50) NOT NULL,
@@ -47,27 +41,21 @@ CREATE TABLE IF NOT EXISTS `transactions` (
 -- Table structure for table `transaction_types`
 --
 
-DROP TABLE IF EXISTS `transaction_types` cascade;
+/*DROP TABLE IF EXISTS `transaction_types` */;
 CREATE TABLE IF NOT EXISTS `transaction_types` (
   `name` varchar(20) NOT NULL,
   `code` varchar(10) NOT NULL,
   PRIMARY KEY (`code`)
 ) ;
 
---
--- Dumping data for table `transaction_types`
---
 
-INSERT INTO `transaction_types` (`name`, `code`) VALUES
-( 'Credit', 'CR'),
-( 'Debit', 'DB');
 
 
 --
 -- Table structure for table `wallets`
 --
 
-DROP TABLE IF EXISTS `wallets` cascade;
+/*DROP TABLE IF EXISTS `wallets` cascade;*/
 CREATE TABLE IF NOT EXISTS `wallets` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `user_id` int(50) NOT NULL,
@@ -78,7 +66,6 @@ CREATE TABLE IF NOT EXISTS `wallets` (
   KEY `currency_w` (`currency_code`)
 ) ;
 
-INSERT INTO `wallets` (`id`, `user_id`, `amount`, `currency_code`,  `last_updated`) VALUES (NULL, '1', '100', 'SEK',  '2020-04-11 05:07:00');
 
 
 
