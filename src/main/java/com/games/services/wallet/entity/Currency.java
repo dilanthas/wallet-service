@@ -1,4 +1,4 @@
-package com.games.services.wallet.model;
+package com.games.services.wallet.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

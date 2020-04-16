@@ -2,7 +2,7 @@ package com.games.services.wallet.service;
 
 import com.games.services.wallet.exception.NoDataFoundException;
 import com.games.services.wallet.exception.WalletException;
-import com.games.services.wallet.model.Wallet;
+import com.games.services.wallet.entity.Wallet;
 
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;

@@ -2,8 +2,8 @@ package com.games.services.wallet.service;
 
 import com.games.services.wallet.exception.NoDataFoundException;
 import com.games.services.wallet.exception.WalletException;
-import com.games.services.wallet.model.Currency;
-import com.games.services.wallet.model.Wallet;
+import com.games.services.wallet.entity.Currency;
+import com.games.services.wallet.entity.Wallet;
 import com.games.services.wallet.repository.CurrencyRepository;
 import com.games.services.wallet.repository.WalletRepository;
 import org.junit.Assert;

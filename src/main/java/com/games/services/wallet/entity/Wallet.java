@@ -1,4 +1,4 @@
-package com.games.services.wallet.model;
+package com.games.services.wallet.entity;
 
 import com.games.services.wallet.exception.ErrorConstants;
 import lombok.AllArgsConstructor;

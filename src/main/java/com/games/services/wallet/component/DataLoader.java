@@ -1,7 +1,7 @@
 package com.games.services.wallet.component;
 
-import com.games.services.wallet.model.Currency;
-import com.games.services.wallet.model.TransactionType;
+import com.games.services.wallet.entity.Currency;
+import com.games.services.wallet.entity.TransactionType;
 import com.games.services.wallet.repository.CurrencyRepository;
 import com.games.services.wallet.repository.TransactionTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,7 +1,7 @@
 package com.games.services.wallet.component;
 
 import com.games.services.wallet.dto.TransactionDTO;
-import com.games.services.wallet.model.Transaction;
+import com.games.services.wallet.entity.Transaction;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

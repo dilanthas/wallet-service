@@ -1,8 +1,8 @@
 package com.games.services.wallet.controller;
 
 import com.games.services.wallet.exception.ErrorConstants;
-import com.games.services.wallet.model.Currency;
-import com.games.services.wallet.model.Wallet;
+import com.games.services.wallet.entity.Currency;
+import com.games.services.wallet.entity.Wallet;
 import com.games.services.wallet.service.WalletService;
 import org.junit.Before;
 import org.junit.Test;
